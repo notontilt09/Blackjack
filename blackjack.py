@@ -7,6 +7,7 @@ from colorama import Fore, Style, Back
 # initialize player bank
 bank = 1000
 
+# get the value of a single card
 def card_value(card):
   rank = card[0]
   if rank in [x for x in range(2, 11)]:
@@ -16,6 +17,7 @@ def card_value(card):
   elif rank == 'A':
     return 11
 
+# get the value of an entire hand
 def get_hand_value(hand):
   num_aces = 0
   total = 0
@@ -28,6 +30,7 @@ def get_hand_value(hand):
     else:
       total += card[0]
     
+    # handling aces
     if total > 21 and num_aces > 0:
       total -= 10
       num_aces -= 1
@@ -38,20 +41,21 @@ def get_hand_value(hand):
 # single hand loop
 while True:
   os.system('clear')
+  # set up deck
   ranks = [2, 3, 4, 5, 6, 7, 8, 9, 'J', 'Q', 'K', 'A']
   suits = ['Spades', 'Hearts', 'Diamonds', 'Clubs']
-
   deck = list(itertools.product(ranks, suits))
+
   # shuffle the deck
   random.shuffle(deck)
 
   # initialize the hands
   player_hand = [deck.pop(), deck.pop()]
   dealer_hand = [deck.pop(), deck.pop()]
-
   dealer_total = get_hand_value(dealer_hand)
   player_total = get_hand_value(player_hand)
 
+  # boolean to keep track if hand ends on initital deal
   hand_over = False
 
   # handle initial deal
@@ -86,22 +90,21 @@ while True:
     elif cmd != 'y':
       print('Invalid input')
 
-  # implement game logic
+  # if hand doesn't end on deal, implement game logic
   else:
+    # player loop
     while player_total < 21:
       cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand ')
       
+      # if user hits
       if cmd == 'h':
         os.system('clear')
         player_hand.append(deck.pop())
         player_total = get_hand_value(player_hand)
         print('\nDealer: ' + Fore.RED + Back.YELLOW +  f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
         print('\nPlayer: ' + Fore.BLUE + Back.YELLOW +  f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-
-        # if player_total == 21:
-        #   print(Fore.GREEN + Back.WHITE + '\n21.  Let\'s see what the dealer has... ' + Style.RESET_ALL)
-        #   break
         
+        # handle player busting
         while player_total > 21:
           cmd = input(Fore.RED + '\nYou busted. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
@@ -112,6 +115,7 @@ while True:
             os.system('clear')
             break
       
+      # if user stays, break out of player loop
       elif cmd == 's':
         break
 
@@ -119,6 +123,7 @@ while True:
         print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
     
     if player_total <= 21:
+      # dealer loop
       while dealer_total <= 21:
         # dealer stays and loses to player
         if dealer_total > 16 and player_total > dealer_total:
@@ -159,6 +164,7 @@ while True:
           else:
             break
         
+        # dealer hits until it reaches 17
         elif dealer_total < 17:
           while dealer_total < 17:
             os.system('clear')
@@ -167,6 +173,7 @@ while True:
             print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
             print('\nPlayer: ' + Fore.BLUE + Back.YELLOW +  f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
             
+            # dealer busts
             if dealer_total > 21:
               cmd = input(Fore.GREEN + '\nDealer busts, you win! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
               if cmd == 'n':
