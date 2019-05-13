@@ -2,7 +2,7 @@ import random
 import itertools
 import os
 import time
-from colorama import Fore, Style, Back
+from colorama import Fore, Style
 
 # initialize player bank
 bank = 1000
@@ -43,7 +43,7 @@ while True:
   os.system('clear')
   # set up deck
   ranks = [2, 3, 4, 5, 6, 7, 8, 9, 'J', 'Q', 'K', 'A']
-  suits = ['Spades', 'Hearts', 'Diamonds', 'Clubs']
+  suits = ['\u2664',	'\u2661',	'\u2662', '\u2667']
   deck = list(itertools.product(ranks, suits))
 
   # shuffle the deck
@@ -61,23 +61,23 @@ while True:
   # handle initial deal
   if dealer_total != 21:
     if player_total != 21:
-      print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
-      print('\nPlayer: ' + Fore.BLUE + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+      print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
+      print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
     else:
-      print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-      print('\nPlayer: ' + Fore.BLUE + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+      print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+      print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
       print(Fore.GREEN + '\nBlackjack! You win. ' + Style.RESET_ALL)
       hand_over = True
       
   elif dealer_total == 21:
     if player_total != 21:
-      print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-      print('\nPlayer: ' + Fore.BLUE + Back.YELLOW +  f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+      print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+      print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
       print(Fore.RED + '\nBlackjack for dealer.  You lose. ' + Style.RESET_ALL)
       hand_over = True
     else:
-      print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-      print('\nPlayer: ' + Fore.RED + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+      print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+      print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
       print(Fore.GREEN + '\n21 for both. Push. ' + Style.RESET_ALL)
       hand_over = True
   
@@ -101,8 +101,8 @@ while True:
         os.system('clear')
         player_hand.append(deck.pop())
         player_total = get_hand_value(player_hand)
-        print('\nDealer: ' + Fore.RED + Back.YELLOW +  f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
-        print('\nPlayer: ' + Fore.BLUE + Back.YELLOW +  f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+        print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
+        print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
         
         # handle player busting
         while player_total > 21:
@@ -128,8 +128,8 @@ while True:
         # dealer stays and loses to player
         if dealer_total > 16 and player_total > dealer_total:
           os.system('clear')
-          print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-          print('\nPlayer: ' + Fore.BLUE + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+          print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
           cmd = input(Fore.GREEN + '\nYou win! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
@@ -141,8 +141,8 @@ while True:
         # dealer stays and beats player
         elif dealer_total > 16 and dealer_total > player_total:
           os.system('clear')
-          print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-          print('\nPlayer: ' + Fore.BLUE + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+          print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
           cmd = input(Fore.RED + '\nYou lose. '  + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
@@ -154,8 +154,8 @@ while True:
         # dealer stays and ties player
         elif dealer_total > 16 and dealer_total == player_total:
           os.system('clear')
-          print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-          print('\nPlayer: ' + Fore.BLUE + Back.YELLOW + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+          print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
           cmd = input(Fore.GREEN + '\nPush! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
@@ -170,8 +170,8 @@ while True:
             os.system('clear')
             dealer_hand.append(deck.pop())
             dealer_total = get_hand_value(dealer_hand)
-            print('\nDealer: ' + Fore.RED + Back.YELLOW + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
-            print('\nPlayer: ' + Fore.BLUE + Back.YELLOW +  f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+            print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
+            print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
             
             # dealer busts
             if dealer_total > 21:
