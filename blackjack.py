@@ -40,9 +40,20 @@ def get_hand_value(hand):
 
 # single hand loop
 while True:
-  os.system('clear')
+  bet = None
+  while bet is None:
+    os.system('clear')
+    bet = input(f'You have ${bank}, how much would you like to wager. ')
+    if not str.isdigit(bet):
+      cmd = input(Fore.RED + '\nOnly whole numbers amigo.  Press any key to continue. ' + Style.RESET_ALL)
+      bet = None
+    if int(bet) > bank:
+      cmd = input(Fore.RED + f'\nYou only have {bank}, your credit sucks, thus you cannot bet {bet}.  Press any key to continue. ' + Style.RESET_ALL)
+      bet = None
+
+
   # set up deck
-  ranks = [2, 3, 4, 5, 6, 7, 8, 9, 'J', 'Q', 'K', 'A']
+  ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
   suits = ['\u2664',	'\u2661',	'\u2662', '\u2667']
   deck = list(itertools.product(ranks, suits))
 
@@ -66,14 +77,16 @@ while True:
     else:
       print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
       print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-      print(Fore.GREEN + '\nBlackjack! You win. ' + Style.RESET_ALL)
+      print(Fore.GREEN + f'\nBlackjack! You win ${int(bet) * 1.5}. ' + Style.RESET_ALL)
+      bank += int(bet) * 1.5
       hand_over = True
       
   elif dealer_total == 21:
     if player_total != 21:
       print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
       print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-      print(Fore.RED + '\nBlackjack for dealer.  You lose. ' + Style.RESET_ALL)
+      print(Fore.RED + f'\nBlackjack for dealer.  You lose ${bet}. ' + Style.RESET_ALL)
+      bank -= int(bet)
       hand_over = True
     else:
       print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
@@ -106,12 +119,13 @@ while True:
         
         # handle player busting
         while player_total > 21:
-          cmd = input(Fore.RED + '\nYou busted. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+          cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
           elif cmd != 'y':
             print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
           else:
+            bank -= int(bet)
             os.system('clear')
             break
       
@@ -130,12 +144,13 @@ while True:
           os.system('clear')
           print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
           print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-          cmd = input(Fore.GREEN + '\nYou win! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+          cmd = input(Fore.GREEN + f'\nYou win ${bet}! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
           elif cmd != 'y':
             print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
           else:
+            bank += int(bet)
             break
         
         # dealer stays and beats player
@@ -143,12 +158,13 @@ while True:
           os.system('clear')
           print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
           print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-          cmd = input(Fore.RED + '\nYou lose. '  + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+          cmd = input(Fore.RED + f'\nYou lose ${bet}! '  + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
           if cmd == 'n':
             exit()
           elif cmd != 'y':
             print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
           else:
+            bank -= int(bet)
             break
         
         # dealer stays and ties player
@@ -175,12 +191,13 @@ while True:
             
             # dealer busts
             if dealer_total > 21:
-              cmd = input(Fore.GREEN + '\nDealer busts, you win! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+              cmd = input(Fore.GREEN + f'\nDealer busts, you win ${bet}! ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
               if cmd == 'n':
                 exit()
               elif cmd != 'y':
                 print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
               else:
+                bank += int(bet)
                 break
     
     
