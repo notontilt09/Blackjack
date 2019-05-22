@@ -78,7 +78,7 @@ while True:
     else:
       print('\nDealer: ' + Fore.RED + f'{dealer_hand}..... {dealer_total} ' + Style.RESET_ALL)
       print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-      print(Fore.GREEN + f'\nBlackjack! You win ${int(bet) * 1.5}. ' + Style.RESET_ALL)
+      print(Fore.GREEN + f'\nBlackjack! You win ${int(int(bet) * 1.5)}. ' + Style.RESET_ALL)
       bank += int(bet) * 1.5
       hand_over = True
       
@@ -108,44 +108,17 @@ while True:
   else:
     # player loop
     while player_total < 21:
-      cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down ')
-      
-      # if user hits
-      if cmd == 'h':
-        os.system('clear')
-        player_hand.append(deck.pop())
-        player_total = get_hand_value(player_hand)
-        print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
-        print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
-        
-        # handle player busting
-        while player_total > 21:
-          cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
-          if cmd == 'n':
-            exit()
-          elif cmd != 'y':
-            print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
-          else:
-            bank -= int(bet)
-            os.system('clear')
-            break
-      
-      # if user stays, break out of player loop
-      elif cmd == 's':
-        break
-      
-      # player doubles
-      elif cmd == 'd':
-        if int(bet) * 2 > bank:
-          cmd = input(Fore.RED + f'\nYou do not have enough funds to double down. Press any key to continue. ' + Style.RESET_ALL)
-          continue
-        else:
+      # initial options of hit/stand/double
+      if len(player_hand) == 2:
+        cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down ')
+        # if user hits
+        if cmd == 'h':
           os.system('clear')
-          bet = int(bet) * 2
           player_hand.append(deck.pop())
           player_total = get_hand_value(player_hand)
           print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
           print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          
           # handle player busting
           while player_total > 21:
             cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
@@ -157,12 +130,65 @@ while True:
               bank -= int(bet)
               os.system('clear')
               break
+        
+        # player doubles
+        elif cmd == 'd':
+          if int(bet) * 2 > bank:
+            cmd = input(Fore.RED + f'\nYou do not have enough funds to double down. Press any key to continue. ' + Style.RESET_ALL)
+            continue
+          else:
+            os.system('clear')
+            bet = int(bet) * 2
+            player_hand.append(deck.pop())
+            player_total = get_hand_value(player_hand)
+            print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
+            print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+            # handle player busting
+            while player_total > 21:
+              cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+              if cmd == 'n':
+                exit()
+              elif cmd != 'y':
+                print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
+              else:
+                bank -= int(bet)
+                os.system('clear')
+                break
+            break
+        # if user stays, break out of player loop
+        elif cmd == 's':
           break
 
-
-
+        else:
+          print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
       else:
-        print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
+        cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand ')
+        # if user hits
+        if cmd == 'h':
+          os.system('clear')
+          player_hand.append(deck.pop())
+          player_total = get_hand_value(player_hand)
+          print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
+          print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          
+          # handle player busting
+          while player_total > 21:
+            cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+            if cmd == 'n':
+              exit()
+            elif cmd != 'y':
+              print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
+            else:
+              bank -= int(bet)
+              os.system('clear')
+              break
+        
+        # if user stays, break out of player loop
+        elif cmd == 's':
+          break
+
+        else:
+          print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
     
     if player_total <= 21:
       # dealer loop
