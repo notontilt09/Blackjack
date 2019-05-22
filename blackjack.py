@@ -161,6 +161,8 @@ while True:
 
         else:
           print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
+      
+      # after initial hit when player has 3 cards, need to remove options to double
       else:
         cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand ')
         # if user hits
