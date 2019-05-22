@@ -43,11 +43,12 @@ while True:
   bet = None
   while bet is None:
     os.system('clear')
-    bet = input(f'You have ${bank}, how much would you like to wager. ')
+    bet = input(f'You have ${int(bank)}, how much would you like to wager. ')
     if not str.isdigit(bet):
       cmd = input(Fore.RED + '\nOnly whole numbers amigo.  Press any key to continue. ' + Style.RESET_ALL)
       bet = None
-    if int(bet) > bank:
+      continue
+    if str.isdigit(bet) and int(bet) > bank:
       cmd = input(Fore.RED + f'\nYou only have {bank}, your credit sucks, thus you cannot bet {bet}.  Press any key to continue. ' + Style.RESET_ALL)
       bet = None
 
@@ -107,7 +108,7 @@ while True:
   else:
     # player loop
     while player_total < 21:
-      cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand ')
+      cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down ')
       
       # if user hits
       if cmd == 'h':
@@ -132,6 +133,33 @@ while True:
       # if user stays, break out of player loop
       elif cmd == 's':
         break
+      
+      # player doubles
+      elif cmd == 'd':
+        if int(bet) * 2 > bank:
+          cmd = input(Fore.RED + f'\nYou do not have enough funds to double down. Press any key to continue. ' + Style.RESET_ALL)
+          continue
+        else:
+          os.system('clear')
+          bet = int(bet) * 2
+          player_hand.append(deck.pop())
+          player_total = get_hand_value(player_hand)
+          print('\nDealer: ' + Fore.RED + f'{dealer_hand[0]}..... {card_value(dealer_hand[0])} ' + Style.RESET_ALL)
+          print('\nPlayer: ' + Fore.GREEN + f'{player_hand}..... {player_total} ' + Style.RESET_ALL)
+          # handle player busting
+          while player_total > 21:
+            cmd = input(Fore.RED + f'\nBUST!  You lost ${bet}. ' + Fore.WHITE + 'Would you like to play again? [y] yes [n] no ' + Style.RESET_ALL)
+            if cmd == 'n':
+              exit()
+            elif cmd != 'y':
+              print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
+            else:
+              bank -= int(bet)
+              os.system('clear')
+              break
+          break
+
+
 
       else:
         print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
