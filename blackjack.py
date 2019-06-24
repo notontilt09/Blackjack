@@ -2,6 +2,7 @@ import random
 import itertools
 import os
 import time
+import sys
 from colorama import Fore, Style
 
 # initialize player bank
@@ -40,6 +41,17 @@ def get_hand_value(hand):
 
 # single hand loop
 while True:
+  if bank <= 0:
+    while bank <= 0:
+      cmd = input(Fore.RED + f'You\'re out of cash.  Refill bank? [y] yes [n] no ' + Style.RESET_ALL)
+      if cmd == 'y':
+        bank = 1000
+      elif cmd == 'n':
+        sys.exit()
+      else:
+        print(Fore.RED + 'Invalid Input' + Style.RESET_ALL)
+        bank = 0
+      
   bet = None
   while bet is None:
     os.system('clear')
