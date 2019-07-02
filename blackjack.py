@@ -120,9 +120,12 @@ while True:
   else:
     # player loop
     while player_total < 21:
-      # initial options of hit/stand/double
+      # initial options of hit/stand/double/split
       if len(player_hand) == 2:
-        cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down ')
+        if player_hand[0][0] == player_hand[1][0]:
+          cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down [p] Split: ')
+        else:
+          cmd = input(f'\nYou have {player_total} vs {card_value(dealer_hand[0])}.  What would you like to do? [h] Hit [s] Stand [d] Double down: ')
         # if user hits
         if cmd == 'h':
           os.system('clear')
@@ -170,6 +173,7 @@ while True:
         # if user stays, break out of player loop
         elif cmd == 's':
           break
+
 
         else:
           print(Fore.RED + '\nInvalid Input' + Style.RESET_ALL)
